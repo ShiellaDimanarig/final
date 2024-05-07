@@ -81,11 +81,14 @@ def main():
                 derived_key = PBKDF2(key, salt.encode(), dkLen=16, count=1000000)
                 try:
                     decrypted_file_contents_bytes = base64.b64decode(file_contents)
+                    decrypted_file_contents = rc4_decrypt(decrypted_file_contents_bytes, derived_key)
+                    try:
+                        decrypted_text = decrypted_file_contents.decode()
+                        st.text_area("Decrypted File", value=decrypted_text, height=200)
+                    except UnicodeDecodeError:
+                        st.error("Decryption produced binary data, unable to decode as text.")
                 except base64.binascii.Error as e:
                     st.error("Invalid base64 encoded file. Please check the input and try again.")
-                else:
-                    decrypted_file_contents = rc4_decrypt(decrypted_file_contents_bytes, derived_key)
-                    st.text_area("Decrypted File", value=decrypted_file_contents.decode(), height=200)
 
 if __name__ == "__main__":
     main()
