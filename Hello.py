@@ -26,9 +26,6 @@ def run():
 
     st.write("# Welcome to Streamlit! 👋")
 
-    st.image('sunrise.jpg', caption='Sunrise by the mountains')
-    st.image('sunrise.jpg', caption='Sunrise by the mountains')
-    st.image('sunrise.jpg', caption='Sunrise by the mountains')
     st.balloons()
 
 
