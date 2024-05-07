@@ -45,6 +45,7 @@ def run():
         - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
     """
     )
+    st.balloons()
 
 
 if __name__ == "__main__":
