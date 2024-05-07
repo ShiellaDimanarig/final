@@ -24,8 +24,10 @@ def run():
         page_icon="👋",
     )
 
+    st.subheader("Camarines Sur Polythecnic Colleges")
+    st.subheader("School Year 2023-2024")
     st.write("# Final Project In Applied Cryptograpy")
-    st.subheader("Group 5")
+    st.subheader("Group 5:")
 
     st.balloons()
 
