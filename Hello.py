@@ -24,7 +24,8 @@ def run():
         page_icon="👋",
     )
 
-    st.write("# Welcome to Streamlit! 👋")
+    st.write("# Final Project In Applied Cryptograpy")
+    st.subheader("Group 5")
 
     st.balloons()
 
