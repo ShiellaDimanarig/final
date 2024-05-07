@@ -33,5 +33,5 @@ if st.button("Submit"):
         
         decrypted = xor_decrypt(ciphertext, key)
         st.write("Decrypted:",decrypted.decode())
-st.snowflakes()
+st.balloons()
 
