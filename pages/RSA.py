@@ -1,107 +1,53 @@
 import streamlit as st
-import random
-import math
 
-prime = set()
-public_key = None
-private_key = None
-n = None
+def gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
 
-def primefiller():
-    seive = [True] * 250
-    seive[0] = False
-    seive[1] = False
-    for i in range(2, 250):
-        for j in range(i * 2, 250, i):
-            seive[j] = False
-    for i in range(len(seive)):
-        if seive[i]:
-            prime.add(i)
+def mod_inverse(a, m):
+    m0, x0, x1 = m, 0, 1
+    while a > 1:
+        q = a // m
+        m, a = a % m, m
+        x0, x1 = x1 - q * x0, x0
+    return x1 + m0 if x1 < 0 else x1
 
-def pickrandomprime():
-    global prime
-    k = random.randint(0, len(prime) - 1)
-    it = iter(prime)
-    for _ in range(k):
-        next(it)
-    ret = next(it)
-    prime.remove(ret)
-    return ret
+def generate_keys(p, q):
+    n = p * q
+    phi = (p - 1) * (q - 1)
+    e = 65537  # Commonly used public exponent
+    d = mod_inverse(e, phi)
+    return ((e, n), (d, n))
 
-def setkeys():
-    global public_key, private_key, n
-    prime1 = pickrandomprime()
-    prime2 = pickrandomprime()
-    n = prime1 * prime2
-    fi = (prime1 - 1) * (prime2 - 1)
-    e = 2
-    while True:
-        if math.gcd(e, fi) == 1:
-            break
-        e += 1
-    public_key = e
-    d = 2
-    while True:
-        if (d * e) % fi == 1:
-            break
-        d += 1
-    private_key = d
+def encrypt_message(message, public_key):
+    e, n = public_key
+    encrypted_message = [pow(ord(char), e, n) for char in message]
+    return encrypted_message
 
-def encrypt(message):
-    global public_key, n
-    e = public_key
-    encrypted_text = 1
-    while e > 0:
-        encrypted_text *= message
-        encrypted_text %= n
-        e -= 1
-    return encrypted_text
-
-def decrypt(encrypted_text):
-    global private_key, n
-    d = private_key
-    decrypted = 1
-    while d > 0:
-        if d % 2 == 1:
-            decrypted = (decrypted * encrypted_text) % n
-        encrypted_text = (encrypted_text * encrypted_text) % n
-        d //= 2
-    return decrypted
-
-def encoder(message):
-    encoded = []
-    for letter in message:
-        encoded.append(encrypt(ord(letter)))
-    return encoded
-
-def decoder(encoded):
-    s = ''
-    for num in encoded:
-        s += chr(decrypt(num))
-    return s
+def decrypt_message(encrypted_message, private_key):
+    d, n = private_key
+    decrypted_message = [chr(pow(char, d, n)) for char in encrypted_message]
+    return ''.join(decrypted_message)
 
 def main():
-    st.title("RSA Encryption App")
-    primefiller()
-    setkeys()
+    st.title("RSA Encryption and Decryption")
 
-    st.text_input("Public Key:", value=str(public_key), key="public_key_input")
-    st.text_input("Private Key:", value=str(private_key), key="private_key_input")
+    p = st.number_input("Enter prime number p:")
+    q = st.number_input("Enter prime number q:")
+    message = st.text_input("Enter message to encrypt:")
 
-    mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text"))
-    text = st.text_area("Enter Text to Process")
+    if p > 1 and q > 1:
+        public_key, private_key = generate_keys(p, q)
+        st.write("Public Key (e, n):", public_key)
+        st.write("Private Key (d, n):", private_key)
 
-    if st.button("Process"):
-        if mode == "Encrypt Text":
-            coded = encoder(text)
-            st.text_area("Encrypted Text", value=' '.join(str(p) for p in coded), height=10, max_chars=None)
-        else:
-            try:
-                coded = [int(x) for x in text.split()]
-                decoded_text = decoder(coded)
-                st.text_area("Decrypted Text", value=decoded_text, height=10, max_chars=None)
-            except Exception as e:
-                st.error("Error decrypting text. Please check the input and try again.")
+        if message:
+            encrypted_message = encrypt_message(message, public_key)
+            st.write("Encrypted Message:", encrypted_message)
+
+            decrypted_message = decrypt_message(encrypted_message, private_key)
+            st.write("Decrypted Message:", decrypted_message)
 
 if __name__ == "__main__":
     main()
