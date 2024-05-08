@@ -26,11 +26,9 @@ def main():
 
     private_key, public_key = generate_key_pair()
 
-    st.text("Public Key:")
-    st.text(public_key.decode())
+    st.text_input("Public Key:")
 
-    st.text("Private Key:")
-    st.text(private_key.decode())
+    st.text_input("Private Key:")
 
     mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text"))
     text = st.text_area("Enter Text to Process")
@@ -45,7 +43,7 @@ def main():
                 decrypted_text = rsa_decrypt(encrypted_text, private_key)
                 st.text_area("Decrypted Text", value=decrypted_text, height=10, max_chars=None)
             except Exception as e:
-                st.error(f"Error decrypting text: {str(e)}")
+                st.error("Error decrypting text. Please check the input and try again.")
 
 if __name__ == "__main__":
     main()
