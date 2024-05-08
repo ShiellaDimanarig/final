@@ -21,7 +21,7 @@ def main():
     key = st.text_input("Enter Key", type="password")
     salt = st.text_input("Enter Salt", type="password")
 
-    if mode == "Encrypt Text":
+    if mode == "Encrypt Text" or mode == "Encrypt File":
         text = st.text_area("Enter Text to Process")
         if st.button("Encrypt"):
             if not key:
@@ -33,7 +33,7 @@ def main():
                 encrypted_text = rc4_encrypt(text.encode(), derived_key)
                 st.text_area("Processed Text", value=base64.b64encode(encrypted_text).decode(), height=200)
 
-    elif mode == "Decrypt Text":
+    elif mode == "Decrypt Text" or mode == "Decrypt File":
         text = st.text_area("Enter Text to Process")
         if st.button("Decrypt"):
             if not key:
