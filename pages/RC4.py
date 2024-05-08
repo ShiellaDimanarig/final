@@ -19,9 +19,7 @@ def main():
     st.title("RC4 Encryption App")
 
     mode = st.sidebar.radio("Mode", ("Encrypt Text", "Decrypt Text", "Encrypt File", "Decrypt File"))
-
-    key = st.sidebar.text_input("Enter Key", type="password")
-    iv = st.sidebar.text_input("Enter IV (Initialization Vector)", type="password")
+    key = st.text_input("Enter Key", type="password")
     salt = st.sidebar.text_input("Enter Salt", type="password")
 
     if mode in ["Encrypt Text", "Decrypt Text"]:
@@ -50,8 +48,8 @@ def main():
                             decrypted_text = rc4_decrypt(encrypted_text_bytes, derived_key)
                             st.text_area("Processed Text", value=decrypted_text.decode(), height=200)
     
-    elif mode in ["Encrypt File"]:
-        file = st.file_uploader("Upload File", type=["txt", "pdf"])
+    elif mode in ["Encrypt File", "Decrypt File"]:
+        file = st.file_uploader("Upload File", type=["txt", "pdf"], accept_multiple_files=False)
         if st.button(mode):
             if not key:
                 st.error("Please enter a key")
@@ -69,26 +67,9 @@ def main():
                         file_name="encrypted_file.txt",
                         mime="text/plain"
                     )
-    elif mode == "Decrypt File":
-        file = st.file_uploader("Upload File", type=["txt", "pdf"])
-        if st.button(mode):
-            if not key:
-                st.error("Please enter a key")
-            elif not file:
-                st.error("Please upload a file")
-            else:
-                file_contents = file.read()
-                derived_key = PBKDF2(key, salt.encode(), dkLen=32, count=1000000)
-                try:
-                    decrypted_file_contents_bytes = base64.b64decode(file_contents)
-                    decrypted_file_contents = rc4_decrypt(decrypted_file_contents_bytes, derived_key)
-                    try:
-                        decrypted_text = decrypted_file_contents.decode()
-                        st.text_area("Decrypted File", value=decrypted_text, height=200)
-                    except UnicodeDecodeError:
-                        st.error("Decryption produced binary data, unable to decode as text.")
-                except base64.binascii.Error as e:
-                    st.error("Invalid base64 encoded file. Please check the input and try again.")
+                else:
+                    decrypted_file_contents = rc4_decrypt(file_contents, derived_key)
+                    st.text_area("Decrypted File", value=decrypted_file_contents.decode(), height=200)
 
 if __name__ == "__main__":
     main()
