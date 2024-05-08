@@ -26,9 +26,9 @@ def main():
 
     private_key, public_key = generate_key_pair()
 
-    st.text_input("Public Key:")
+    st.text_area("Public Key:", value=public_key.decode(), height=10, max_chars=None)
 
-    st.text_input("Private Key:")
+    st.text_area("Private Key:", value=private_key.decode(), height=10, max_chars=None)
 
     mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text"))
     text = st.text_area("Enter Text to Process")
@@ -39,11 +39,14 @@ def main():
             st.text_area("Encrypted Text", value=base64.b64encode(encrypted_text).decode(), height=10, max_chars=None)
         else:
             try:
-                encrypted_text = base64.b64decode(text)
-                decrypted_text = rsa_decrypt(encrypted_text, private_key)
-                st.text_area("Decrypted Text", value=decrypted_text, height=10, max_chars=None)
+                if text.strip():  # Check if text is not empty
+                    encrypted_text = base64.b64decode(text)
+                    decrypted_text = rsa_decrypt(encrypted_text, private_key)
+                    st.text_area("Decrypted Text", value=decrypted_text, height=10, max_chars=None)
+                else:
+                    st.error("Please enter text to decrypt.")
             except Exception as e:
-                st.error("Error decrypting text. Please check the input and try again.")
+                st.error(f"Error decrypting text: {str(e)}")
 
 if __name__ == "__main__":
     main()
