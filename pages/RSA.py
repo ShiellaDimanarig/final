@@ -26,11 +26,11 @@ def main():
 
     private_key, public_key = generate_key_pair()
 
-    st.text("Public Key:")
-    st.text(public_key.decode())
+    st.text_input("Public Key:")
+    st.text_input(public_key.decode())
 
-    st.text("Private Key:")
-    st.text(private_key.decode())
+    st.text_input("Private Key:")
+    st.text_input(private_key.decode())
 
     mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text"))
     text = st.text_area("Enter Text to Process")
