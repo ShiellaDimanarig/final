@@ -33,7 +33,7 @@ def hash_file(file, hash_type):
     return hasher.hexdigest()
 
 # Streamlit app
-st.title("Hashing Functions")
+st.title("Hashing Functions🔐")
 
 # Ask the user to input text or upload a file
 option = st.radio("Choose input method:", ("Text", "File"))

@@ -22,7 +22,7 @@ def rsa_decrypt(ciphertext, private_key):
     return decrypted_message.decode()
 
 def main():
-    st.title("RSA Encryption App")
+    st.title("Rivest Shamir Adleman(RSA)🔐")
 
     private_key, public_key = generate_key_pair()
 
