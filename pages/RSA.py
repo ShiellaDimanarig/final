@@ -24,29 +24,29 @@ def rsa_decrypt(ciphertext, private_key):
 def main():
     st.title("Rivest Shamir Adleman(RSA)🔐")
 
-    private_key, public_key = generate_key_pair()
-
-    st.text_area("Public Key:", value=public_key.decode(), height=10, max_chars=None)
-
-    st.text_area("Private Key:", value=private_key.decode(), height=10, max_chars=None)
+    public_key = st.text_area("Public Key:", height=10)
+    private_key = st.text_area("Private Key:", height=10)
 
     mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text"))
     text = st.text_area("Enter Text to Process")
 
     if st.button("Process"):
         if mode == "Encrypt Text":
-            encrypted_text = rsa_encrypt(text, public_key)
-            st.text_area("Encrypted Text", value=base64.b64encode(encrypted_text).decode(), height=10, max_chars=None)
+            if public_key.strip():  # Check if public key is provided
+                encrypted_text = rsa_encrypt(text, public_key.encode())
+                st.text_area("Encrypted Text", value=base64.b64encode(encrypted_text).decode(), height=10, max_chars=None)
+            else:
+                st.error("Please enter the public key.")
         else:
-            try:
+            if private_key.strip():  # Check if private key is provided
                 if text.strip():  # Check if text is not empty
                     encrypted_text = base64.b64decode(text)
-                    decrypted_text = rsa_decrypt(encrypted_text, private_key)
+                    decrypted_text = rsa_decrypt(encrypted_text, private_key.encode())
                     st.text_area("Decrypted Text", value=decrypted_text, height=10, max_chars=None)
                 else:
                     st.error("Please enter text to decrypt.")
-            except Exception as e:
-                st.error(f"Error decrypting text: {str(e)}")
+            else:
+                st.error("Please enter the private key.")
 
 if __name__ == "__main__":
     main()
