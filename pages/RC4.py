@@ -15,7 +15,7 @@ def rc4_decrypt(ciphertext, key):
     return decrypted_message
 
 def main():
-    st.title("File Encryption App")
+    st.title("💻RC4 Encryption and Decryption App for Text and File Input 💻")
 
     mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text", "Encrypt File", "Decrypt File"))
     key = st.text_input("Enter Key", type="password")
