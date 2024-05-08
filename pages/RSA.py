@@ -35,13 +35,13 @@ def main():
 
     p = st.number_input("Enter prime number p:")
     q = st.number_input("Enter prime number q:")
-    message = st.text_input("Enter message to encrypt:")
 
     if p > 1 and q > 1:
         public_key, private_key = generate_keys(p, q)
         st.write("Public Key (e, n):", public_key)
         st.write("Private Key (d, n):", private_key)
-
+        message = st.text_input("Enter message to encrypt:")
+        
         if message:
             encrypted_message = encrypt_message(message, public_key)
             st.write("Encrypted Message:", encrypted_message)
