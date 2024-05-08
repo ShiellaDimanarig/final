@@ -1,7 +1,6 @@
 import streamlit as st
 from Crypto.Cipher import ARC4
 from Crypto.Protocol.KDF import PBKDF2
-from Crypto.Random import get_random_bytes
 import base64
 from io import BytesIO
 
@@ -68,13 +67,11 @@ def main():
                         mime="text/plain"
                     )
                 else:
-                    decrypted_file_contents = rc4_encrypt(file_contents, derived_key)
-                    decrypted_file_content_base64 = base64.b64encode(encrypted_file_contents).decode('utf-8')
-                    st.download_bu_base64 = base64.b64encode(encrypted_file_contents).decode('utf-8')
+                    decrypted_file_contents = rc4_decrypt(file_contents, derived_key)
                     st.download_button(
-                        label="Download Encrypted File",
-                        data=BytesIO(encrypted_file_contents_base64.encode()),
-                        file_name="encrypted_file.txt",
+                        label="Download Decrypted File",
+                        data=BytesIO(decrypted_file_contents),
+                        file_name="decrypted_file.txt",
                         mime="text/plain"
                     )
 
