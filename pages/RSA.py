@@ -29,8 +29,8 @@ def main():
 
     generate_rsa_keys()
 
-    st.text_input("Public Key:", value=public_key.decode(), key="public_key_input")
-    st.text_input("Private Key:", value=private_key.decode(), key="private_key_input")
+    st.text_area("Public Key:", value=public_key.decode(), height=10, max_chars=None)
+    st.text_area("Private Key:", value=private_key.decode(), height=10, max_chars=None)
 
     mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text"))
     text = st.text_area("Enter Text to Process")
