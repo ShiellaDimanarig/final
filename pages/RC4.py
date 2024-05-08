@@ -15,40 +15,42 @@ def rc4_decrypt(ciphertext, key):
     return decrypted_message
 
 def main():
-    st.title("RC4 Encryption App")
+    st.title("File Encryption App")
 
     mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text", "Encrypt File", "Decrypt File"))
     key = st.text_input("Enter Key", type="password")
     salt = st.text_input("Enter Salt", type="password")
 
-    if mode in ["Encrypt Text", "Decrypt Text"]:
+    if mode == "Encrypt Text" or mode == "Encrypt File":
         text = st.text_area("Enter Text to Process")
-        if st.button(mode):
+        if st.button("Encrypt"):
             if not key:
                 st.error("Please enter a key")
+            elif not text:
+                st.error("Please enter text to encrypt")
             else:
                 derived_key = PBKDF2(key, salt.encode(), dkLen=16, count=1000000)
-                if mode == "Encrypt Text":
-                    if not text:
-                        st.error("Please enter text to encrypt")
-                    else:
-                        encrypted_text = rc4_encrypt(text.encode(), derived_key)
-                        encrypted_text_base64 = base64.b64encode(encrypted_text).decode('utf-8')
-                        st.text_area("Processed Text", value=encrypted_text_base64, height=200)
-                else:
-                    if not text:
-                        st.error("Please enter text to decrypt")
-                    else:
-                        try:
-                            encrypted_text_bytes = base64.b64decode(text)
-                        except base64.binascii.Error as e:
-                            st.error("Invalid base64 encoded string. Please check the input and try again.")
-                        else:
-                            decrypted_text = rc4_decrypt(encrypted_text_bytes, derived_key)
-                            st.text_area("Processed Text", value=decrypted_text.decode(), height=200)
-    
-    elif mode in ["Encrypt File", "Decrypt File"]:
-        file = st.file_uploader("Upload File", type=["txt", "pdf"], accept_multiple_files=False)
+                encrypted_text = rc4_encrypt(text.encode(), derived_key)
+                st.text_area("Processed Text", value=base64.b64encode(encrypted_text).decode(), height=200)
+
+    elif mode == "Decrypt Text" or mode == "Decrypt File":
+        text = st.text_area("Enter Text to Process")
+        if st.button("Decrypt"):
+            if not key:
+                st.error("Please enter a key")
+            elif not text:
+                st.error("Please enter text to decrypt")
+            else:
+                try:
+                    encrypted_text_bytes = base64.b64decode(text)
+                    derived_key = PBKDF2(key, salt.encode(), dkLen=16, count=1000000)
+                    decrypted_text = rc4_decrypt(encrypted_text_bytes, derived_key)
+                    st.text_area("Processed Text", value=decrypted_text.decode(), height=200)
+                except base64.binascii.Error as e:
+                    st.error("Invalid base64 encoded string. Please check the input and try again.")
+
+    if mode == "Encrypt File" or mode == "Decrypt File":
+        file = st.file_uploader("Upload File", type=["pdf", "txt"], accept_multiple_files=False)
         if st.button(mode):
             if not key:
                 st.error("Please enter a key")
@@ -59,20 +61,19 @@ def main():
                 derived_key = PBKDF2(key, salt.encode(), dkLen=16, count=1000000)
                 if mode == "Encrypt File":
                     encrypted_file_contents = rc4_encrypt(file_contents, derived_key)
-                    encrypted_file_contents_base64 = base64.b64encode(encrypted_file_contents).decode('utf-8')
                     st.download_button(
                         label="Download Encrypted File",
-                        data=BytesIO(encrypted_file_contents_base64.encode()),
-                        file_name="encrypted_file.txt",
-                        mime="text/plain"
+                        data=BytesIO(encrypted_file_contents),
+                        file_name="encrypted_file" + file.name[-4:],
+                        mime="application/octet-stream"
                     )
                 else:
                     decrypted_file_contents = rc4_decrypt(file_contents, derived_key)
                     st.download_button(
                         label="Download Decrypted File",
                         data=BytesIO(decrypted_file_contents),
-                        file_name="decrypted_file.txt",
-                        mime="text/plain"
+                        file_name="decrypted_file" + file.name[-4:],
+                        mime="application/octet-stream"
                     )
 
 if __name__ == "__main__":
