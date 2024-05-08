@@ -16,8 +16,15 @@ def mod_inverse(a, m):
 def generate_keys(p, q):
     n = p * q
     phi = (p - 1) * (q - 1)
+    
+    # Choose a value for e that is relatively prime to phi
     e = 65537  # Commonly used public exponent
+    while gcd(e, phi) != 1:
+        e += 2  # Increment e until it's relatively prime to phi
+    
+    # Compute the modular multiplicative inverse of e modulo phi
     d = mod_inverse(e, phi)
+    
     return (e, n), (d, n)
 
 def encrypt_message(message, public_key):
@@ -33,8 +40,8 @@ def decrypt_message(encrypted_message, private_key):
 def main():
     st.title("RSA Encryption and Decryption")
 
-    p = int(st.number_input("Enter prime number p:"))
-    q = int(st.number_input("Enter prime number q:"))
+    p = st.number_input("Enter prime number p:")
+    q = st.number_input("Enter prime number q:")
     message = st.text_input("Enter message to encrypt:")
 
     if p > 1 and q > 1:
