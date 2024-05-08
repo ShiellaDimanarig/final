@@ -68,10 +68,14 @@ def main():
                         mime="text/plain"
                     )
                 else:
-                    decrypted_file_contents = rc4_decrypt(file_contents, derived_key)
-                    with st.file_uploader("Save Decrypted File As", type=["txt", "pdf"], key="decrypted_file"):
-                        st.write("Click above to save the decrypted file.")
-                        st.text_area("Decrypted File", value=decrypted_file_contents.decode(), height=200)
+                    decrypted_file_contents = rc4_encrypt(file_contents, derived_key)
+                    decrypted_file_content_base64 = base64.b64encode(encrypted_file_contents).decode('utf-8')
+                    st.download_bu_base64 = base64.b64encode(encrypted_file_contents).decode('utf-8')
+                    st.download_button(
+                        label="Download Encrypted File",
+                        data=BytesIO(encrypted_file_contents_base64.encode()),
+                        file_name="encrypted_file.txt",
+                        mime="text/plain"
 
 if __name__ == "__main__":
     main()
