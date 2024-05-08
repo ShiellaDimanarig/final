@@ -76,6 +76,7 @@ def main():
                         data=BytesIO(encrypted_file_contents_base64.encode()),
                         file_name="encrypted_file.txt",
                         mime="text/plain"
+                    )
 
 if __name__ == "__main__":
     main()
