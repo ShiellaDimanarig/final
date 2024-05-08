@@ -18,9 +18,9 @@ def rc4_decrypt(ciphertext, key):
 def main():
     st.title("RC4 Encryption App")
 
-    mode = st.sidebar.radio("Mode", ("Encrypt Text", "Decrypt Text", "Encrypt File", "Decrypt File"))
+    mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text", "Encrypt File", "Decrypt File"))
     key = st.text_input("Enter Key", type="password")
-    salt = st.sidebar.text_input("Enter Salt", type="password")
+    salt = st.text_input("Enter Salt", type="password")
 
     if mode in ["Encrypt Text", "Decrypt Text"]:
         text = st.text_area("Enter Text to Process")
@@ -69,7 +69,9 @@ def main():
                     )
                 else:
                     decrypted_file_contents = rc4_decrypt(file_contents, derived_key)
-                    st.text_area("Decrypted File", value=decrypted_file_contents.decode(), height=200)
+                    with st.file_uploader("Save Decrypted File As", type=["txt", "pdf"], key="decrypted_file"):
+                        st.write("Click above to save the decrypted file.")
+                        st.text_area("Decrypted File", value=decrypted_file_contents.decode(), height=200)
 
 if __name__ == "__main__":
     main()
