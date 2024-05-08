@@ -28,6 +28,7 @@ def run():
     st.subheader("School Year 2023-2024")
     st.write("# Final Project In Applied Cryptograpy")
     st.subheader("Group 5:")
+    st.image("4.png")
 
     st.balloons()
 
