@@ -17,11 +17,13 @@ def compute_n_and_t(p, q):
     return n, t
 
 def generate_key_pair(p, q):
-    n, t = compute_n_and_t(p, q)
-    key = RSA.construct((n, 65537, t))
-    private_key = key.export_key()
-    public_key = key.publickey().export_key()
-    return private_key, public_key
+    try:
+        key = RSA.generate(2048)
+        private_key = key.export_key()
+        public_key = key.publickey().export_key()
+        return private_key, public_key
+    except ValueError:
+        st.error("Unable to compute RSA key pair. Please try different prime numbers.")
 
 def rsa_encrypt(message, public_key):
     key = RSA.import_key(public_key)
@@ -45,10 +47,11 @@ def main():
         if is_prime(int(p)) and is_prime(int(q)):
             n, t = compute_n_and_t(int(p), int(q))
             private_key, public_key = generate_key_pair(int(p), int(q))
-            st.text_area("Public Key:", value=public_key.decode(), height=10, max_chars=None)
-            st.text_area("Private Key:", value=private_key.decode(), height=10, max_chars=None)
-            st.text_area("Value of n:", value=str(n), height=1, max_chars=None)
-            st.text_area("Value of t:", value=str(t), height=1, max_chars=None)
+            if private_key and public_key:
+                st.text_area("Public Key:", value=public_key.decode(), height=10, max_chars=None)
+                st.text_area("Private Key:", value=private_key.decode(), height=10, max_chars=None)
+                st.text_area("Value of n:", value=str(n), height=1, max_chars=None)
+                st.text_area("Value of t:", value=str(t), height=1, max_chars=None)
         else:
             st.error("Please enter prime numbers for p and q.")
 
