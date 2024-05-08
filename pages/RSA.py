@@ -3,6 +3,14 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 import base64
 
+def is_prime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
 def compute_n_and_t(p, q):
     n = p * q
     t = (p - 1) * (q - 1)
@@ -34,12 +42,15 @@ def main():
     q = st.number_input("Value of Prime number q:", min_value=2, step=1)
 
     if st.button("Generate Key Pair"):
-        n, t = compute_n_and_t(int(p), int(q))
-        private_key, public_key = generate_key_pair(int(p), int(q))
-        st.text_area("Public Key:", value=public_key.decode(), height=10, max_chars=None)
-        st.text_area("Private Key:", value=private_key.decode(), height=10, max_chars=None)
-        st.text_area("Value of n:", value=str(n), height=1, max_chars=None)
-        st.text_area("Value of t:", value=str(t), height=1, max_chars=None)
+        if is_prime(int(p)) and is_prime(int(q)):
+            n, t = compute_n_and_t(int(p), int(q))
+            private_key, public_key = generate_key_pair(int(p), int(q))
+            st.text_area("Public Key:", value=public_key.decode(), height=10, max_chars=None)
+            st.text_area("Private Key:", value=private_key.decode(), height=10, max_chars=None)
+            st.text_area("Value of n:", value=str(n), height=1, max_chars=None)
+            st.text_area("Value of t:", value=str(t), height=1, max_chars=None)
+        else:
+            st.error("Please enter prime numbers for p and q.")
 
     mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text"))
     text = st.text_area("Enter Text to Process")
