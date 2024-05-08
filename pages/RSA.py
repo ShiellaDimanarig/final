@@ -3,9 +3,14 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 import base64
 
-def generate_key_pair(p, q):
+def compute_n_and_t(p, q):
     n = p * q
-    key = RSA.construct((n, 65537))
+    t = (p - 1) * (q - 1)
+    return n, t
+
+def generate_key_pair(p, q):
+    n, t = compute_n_and_t(p, q)
+    key = RSA.construct((n, 65537, t))
     private_key = key.export_key()
     public_key = key.publickey().export_key()
     return private_key, public_key
@@ -29,9 +34,12 @@ def main():
     q = st.number_input("Value of Prime number q:", min_value=2, step=1)
 
     if st.button("Generate Key Pair"):
+        n, t = compute_n_and_t(int(p), int(q))
         private_key, public_key = generate_key_pair(int(p), int(q))
         st.text_area("Public Key:", value=public_key.decode(), height=10, max_chars=None)
         st.text_area("Private Key:", value=private_key.decode(), height=10, max_chars=None)
+        st.text_area("Value of n:", value=str(n), height=1, max_chars=None)
+        st.text_area("Value of t:", value=str(t), height=1, max_chars=None)
 
     mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text"))
     text = st.text_area("Enter Text to Process")
