@@ -42,8 +42,6 @@ def main():
         st.write("Public Key (e, n):", public_key)
         st.write("Private Key (d, n):", private_key)
 
-    if st.button("Generate New Key Pair"):
-        st.session_state.key_generated = True
 
 if __name__ == "__main__":
     main()
