@@ -16,40 +16,34 @@ def mod_inverse(a, m):
 def generate_keys(p, q):
     n = p * q
     phi = (p - 1) * (q - 1)
-    e = 65537  # Commonly used public exponent
+    
+    # Choose a value for e that is relatively prime to phi
+    e = 107  # Example public exponent
     d = mod_inverse(e, phi)
+    
     return (e, n), (d, n)
 
-def encrypt_message(message, public_key):
-    e, n = public_key
-    encrypted_message = pow(message, e, n)
-    return encrypted_message
-
-def decrypt_message(encrypted_message, private_key):
-    d, n = private_key
-    decrypted_message = pow(encrypted_message, d, n)
-    return decrypted_message
-
 def main():
-    st.title("RSA Encryption and Decryption")
+    st.title("RSA Key Generation Example")
 
     p = st.number_input("Enter prime number p:")
     q = st.number_input("Enter prime number q:")
-    message = st.text_input("Enter message to encrypt:")
 
     if p > 1 and q > 1:
         public_key, private_key = generate_keys(p, q)
+        n = p * q
+        phi = (p - 1) * (q - 1)
+        t = phi
+        st.write("p:", p)
+        st.write("q:", q)
+        st.write("n:", n)
+        st.write("t:", t)
+        st.write("gcd(e, t):", gcd(107, t))  # Check gcd(e, phi) for validation
         st.write("Public Key (e, n):", public_key)
         st.write("Private Key (d, n):", private_key)
 
-        if message:
-            message_int = int.from_bytes(message.encode(), 'big')
-            encrypted_message = encrypt_message(message_int, public_key)
-            st.write("Encrypted Message:", encrypted_message)
-
-            decrypted_message_int = decrypt_message(encrypted_message, private_key)
-            decrypted_message = decrypted_message_int.to_bytes((decrypted_message_int.bit_length() + 7) // 8, 'big').decode()
-            st.write("Decrypted Message:", decrypted_message)
+    if st.button("Generate New Key Pair"):
+        st.session_state.key_generated = True
 
 if __name__ == "__main__":
     main()
