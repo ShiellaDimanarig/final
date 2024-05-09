@@ -27,15 +27,28 @@ def generate_keys(p, q):
     
     return (e, n), (d, n)
 
-def encrypt_message(message, public_key):
-    e, n = public_key
-    encrypted_message = pow(message, e, n)
-    return encrypted_message
-
-def decrypt_message(encrypted_message, private_key):
-    d, n = private_key
-    decrypted_message = pow(encrypted_message, d, n)
-    return decrypted_message
+# To encrypt the given number
+def encrypt(message):
+    global public_key, n
+    e = public_key
+    encrypted_text = 1
+    while e > 0:
+        encrypted_text *= message
+        encrypted_text %= n
+        e -= 1
+    return encrypted_text
+ 
+ 
+# To decrypt the given number
+def decrypt(encrypted_text):
+    global private_key, n
+    d = private_key
+    decrypted = 1
+    while d > 0:
+        decrypted *= encrypted_text
+        decrypted %= n
+        d -= 1
+    return decrypted
 
 def main():
     st.title("RSA Encryption and Decryption")
