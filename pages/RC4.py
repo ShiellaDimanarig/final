@@ -17,9 +17,9 @@ def rc4_decrypt(ciphertext, key):
 def main():
     st.title("Rivest Cipher 4🔐")
 
-    mode = st.radio("Mode", ("Encrypt Text", "Decrypt Text", "Encrypt File", "Decrypt File"))
-    key = st.text_input("Enter Key", type="password")
-    salt = st.text_input("Enter Salt", type="password")
+    mode = st.sidebar.radio("Mode", ("Encrypt Text", "Decrypt Text", "Encrypt File", "Decrypt File"))
+    key = st.sidebar.text_input("Enter Key", type="password")
+    salt = st.sidebar.text_input("Enter Salt", type="password")
 
     if mode == "Encrypt File" or mode == "Decrypt File":
         file = st.file_uploader("Upload File", type=["pdf", "txt"], accept_multiple_files=False)
