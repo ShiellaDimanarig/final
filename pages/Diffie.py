@@ -27,19 +27,16 @@ private_key = st.number_input("Enter your private key (a):", min_value=1, step=1
 # Calculate public key using Diffie-Hellman
 if st.button("Calculate Public Key"):
     public_key = diffie_hellman(p, g, private_key)
-    st.success(f"Your public key (A): {public_key}")
+    st.success(f"Your public key: {public_key}")
 
-    # Simulate received message
-    received_message = public_key  # For demonstration, the received message is the calculated public key
+    # Input for received message
+    received_message = st.text_input("Enter the received message:", "")
 
     # Display received message
-    st.info(f"Received Message: {received_message}")
+    if received_message:
+        st.info(f"Received Message: {received_message}")
 
 # Simulate sent message (based on user input)
 sent_message = st.text_input("Enter the message you sent:", "")
 if sent_message:
-    st.success(f"Sent Message: {sent_message}")
-
-received_message = st.text_input("Enter the message you sent:", "")
-if received_message:
-    st.success(f"Received Message: {received_message}")
+    st.success(f"Sent Message (A): {sent_message}")
