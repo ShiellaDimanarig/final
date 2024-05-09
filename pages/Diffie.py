@@ -39,3 +39,7 @@ if st.button("Calculate Public Key"):
 sent_message = st.text_input("Enter the message you sent:", "")
 if sent_message:
     st.success(f"Sent Message: {sent_message}")
+
+received_message = st.text_input("Enter the message you sent:", "")
+if received_message:
+    st.success(f"Received Message: {received_message}")
