@@ -103,19 +103,17 @@ def main():
         st.error(f"p: {p} is not a prime number!")
 
     # Encryption and Decryption
-    st.subheader("RSA🔒🔑")
     message = st.text_input("Message:")
     encrypted_message = None
     if message:
         encrypted_message = encrypt(message, public_key)
         if encrypted_message:
             decrypted_message = decrypt(encrypted_message, private_key)
-            st.write("Encryption")
+            st.subheader("Encryption")
             st.write(f"Public key: e = {public_key[0]} | n = {public_key[1]}")
-            st.write("Deryption")
+            st.subheader("Deryption")
             st.write(f"Private key: d = {private_key[0]} ^ -1 mod {public_key[1]} = {private_key[1]} | n = {public_key[1]}")
-            st.write("Message:")
-            st.write(f"message: {message}")
+            st.write(f"Message: {message}")
             st.write(f"message: {[ord(char) for char in message]}")
             st.write("Cipher text:")
             st.write(encrypted_message)
