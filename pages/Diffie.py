@@ -39,4 +39,4 @@ if st.button("Calculate Public Key"):
 # Simulate sent message (based on user input)
 sent_message = st.text_input("Enter the message you sent:", "")
 if sent_message:
-    st.success(f"Sent Message (A): {sent_message}")
+    st.success(f"Sent Message: {sent_message}")
