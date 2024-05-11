@@ -141,5 +141,5 @@ def main():
         else:
             st.write("Decrypted message:", decrypted_message)
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
