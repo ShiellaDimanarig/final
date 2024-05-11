@@ -89,9 +89,8 @@ def main():
         private_key = state.private_key if hasattr(state, 'private_key') else None
 
     # Display RSA parameters
-    st.write("RSA Parameters")
-    st.write(f"p: {p}")
-    st.write(f"q: {q}")
+    st.sidebar.write(f"p: {p}")
+    st.sidebar.write(f"q: {q}")
     if public_key is not None and private_key is not None:
         st.write(f"n = {p}*{q} = {public_key[1]}")
         st.write(f"t = ({p}-1)*({q}-1) = {((p-1)*(q-1))}")
