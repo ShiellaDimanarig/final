@@ -92,10 +92,10 @@ def main():
     st.sidebar.write(f"p: {p}")
     st.sidebar.write(f"q: {q}")
     if public_key is not None and private_key is not None:
-        st.write(f"n = {p}*{q} = {public_key[1]}")
-        st.write(f"t = ({p}-1)*({q}-1) = {((p-1)*(q-1))}")
-        st.write("e =", public_key[0])
-        st.write("d =", private_key[0], f"= pow({public_key[0]}, -1, {(p - 1)*(q - 1)})")
+        st.sidebar.write(f"n = {p}*{q} = {public_key[1]}")
+        st.sidebar.write(f"t = ({p}-1)*({q}-1) = {((p-1)*(q-1))}")
+        st.sidebar.write("e =", public_key[0])
+        st.sidebar.write("d =", private_key[0], f"= pow({public_key[0]}, -1, {(p - 1)*(q - 1)})")
 
     # Display message if 'p' is not prime
     if not is_prime(p):
