@@ -102,7 +102,7 @@ def main():
         st.error(f"p: {p} is not a prime number!")
 
     # Encryption and Decryption
-    message = st.text_input("Message:")
+    message = st.subheader.text_input("Message:")
     encrypted_message = None
     if message:
         encrypted_message = encrypt(message, public_key)
