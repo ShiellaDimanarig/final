@@ -72,7 +72,7 @@ def decrypt(ciphertext, private_key):
 def main():
     state = get_session()
     
-    st.title("RSA Encryption and Decryption")
+    st.title("Rivest-Shamir-Adleman (RSA)🔐")
 
     # Sidebar
     st.sidebar.title("RSA Parameters")
