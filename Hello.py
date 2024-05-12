@@ -25,6 +25,7 @@ def run():
     )
 
     st.write("# Final Project In Applied Cryptograpy")
+    st.write("Through hands-on exploration and practical implementation of secure communication concepts, these projects empower users to design, deploy, and manage secure systems that adhere to industry best practices and regulatory standards, fostering a culture of cybersecurity awareness and resilience.")
     st.image("4.png")
 
     st.balloons()
